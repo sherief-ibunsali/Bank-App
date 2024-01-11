@@ -1,0 +1,82 @@
+const she = accounts.map(function (val) {
+  return val.owner;
+});
+console.log(she);
+btnLogin.addEventListener("click", function (e) {
+  e.preventDefault();
+  const inputValue = inputLoginUsername.value.toLowerCase(); // Convert input value to lowercase for case-insensitive comparison
+
+  if (she.includes(inputValue)) {
+    console.log("hii");
+  } else {
+    console.log("bye");
+  }
+});
+// const she = accounts.map(function (val) {
+//   return val.owner;
+// });
+// console.log(she);
+// let names;
+// for (let i = 0; i < she.length; i++) {
+//   names = she[i];
+//   console.log(names);
+// }
+// btnLogin.addEventListener("click", function (e) {
+//   e.preventDefault();
+//   console.log("Mohammed Shereif");
+
+//   if (inputLoginUsername.value === names) {
+//     console.log("sherief");
+//   } else {
+//     console.log("bye");
+//   }
+// });
+
+
+let currentAccount;
+btnLogin.addEventListener("click", function (e) {
+  e.preventDefault();
+  currentAccount = accounts.find(function (val) {
+    return val.username === inputLoginUsername.value;
+  });
+  console.log(currentAccount);
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    console.log("sherief");
+    containerApp.style.opacity = 100;
+    allAmounts(currentAccount.movements);
+    sumAdd(currentAccount.movements);
+    summary(currentAccount.movements);
+    inputLoginUsername.value = inputLoginPin.value = "";
+    inputLoginPin.blur();
+  } else {
+    alert("You have given the wrong user details");
+  }
+  console.log(balance);
+});
+function updateUI() {
+  allAmounts(currentAccount.movements);
+  sumAdd(currentAccount.movements);
+  summary(currentAccount.movements);
+}
+
+btnTransfer.addEventListener("click", function (e) {
+  e.preventDefault();
+  console.log("Hello sherief");
+  const amount = Number(inputTransferAmount.value);
+  console.log(amount);
+  const recieveAcc = accounts.find(function (val) {
+    return val.username === inputTransferTo.value;
+  });
+  if (
+    amount > 0 &&
+    balance >= amount &&
+    recieveAcc &&
+    recieveAcc?.username !== currentAccount.username
+  ) {
+    console.log("It is valid transfer");
+    currentAccount.movements.push(-amount);
+    recieveAcc.movements.push(amount);
+    updateUI(currentAccount);
+  }
+});
+
